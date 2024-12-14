@@ -44,7 +44,7 @@ export class ExtensionsManager extends UserExtensionsManager {
                 unlink(join(CHROME_EXTENSIONS_PATH, fileName)) :
                 Promise.resolve());
           }
-          Promise.resolve();
+          Promise.resolve([]);
         })
         .then(promisesToDelete => Promise.all(promisesToDelete))
         .catch((e) => console.log('ExtensionsManager init error:', e)),
