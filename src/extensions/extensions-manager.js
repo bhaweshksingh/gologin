@@ -125,7 +125,7 @@ export class ExtensionsManager extends UserExtensionsManager {
 
     const promises = idsToDownload.map(async (id) => {
       const [originalId] = id.split('@');
-      const extUrl = EXTENSION_URL.replace('{ext_id}', originalId);
+      // const extUrl = EXTENSION_URL.replace('{ext_id}', originalId);
 
       const uploadedProfileMetadata = await getExtMetadata(extUrl);
 
@@ -134,7 +134,7 @@ export class ExtensionsManager extends UserExtensionsManager {
 
       const buffer = await new Promise((res) => {
         const chunks = [];
-        request.get(extUrl, {
+        request.get(EXTENSION_URL, {
           maxAttempts: 3,
           retryDelay: 1000,
           timeout: 8 * 1000,
