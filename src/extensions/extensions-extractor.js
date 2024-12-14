@@ -1,8 +1,8 @@
 import decompress from 'decompress';
 import decompressUnzip from 'decompress-unzip';
-import { promises, stat } from 'fs';
+import { promises } from 'fs';
 
-const { access, unlink } = promises;
+const { access, unlink, stat } = promises;
 
 export const extractExtension = (source, dest) => {
   if (!(source && dest)) {
