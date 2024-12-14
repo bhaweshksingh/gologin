@@ -623,10 +623,10 @@ export class GoLogin {
       gologin,
     })));
 
-    const bookmarksParsedData = await getCurrentProfileBookmarks(this.bookmarksFilePath);
-    const bookmarksFromDb = profile.bookmarks?.bookmark_bar;
-    bookmarksParsedData.roots = bookmarksFromDb ? profile.bookmarks : bookmarksParsedData.roots;
-    await writeFile(this.bookmarksFilePath, JSON.stringify(bookmarksParsedData));
+    // const bookmarksParsedData = await getCurrentProfileBookmarks(this.bookmarksFilePath);
+    // const bookmarksFromDb = profile.bookmarks?.bookmark_bar;
+    // bookmarksParsedData.roots = bookmarksFromDb ? profile.bookmarks : bookmarksParsedData.roots;
+    // await writeFile(this.bookmarksFilePath, JSON.stringify(bookmarksParsedData));
 
     debug('Profile ready. Path: ', profilePath, 'PROXY', JSON.stringify(get(preferences, 'gologin.proxy')));
 
