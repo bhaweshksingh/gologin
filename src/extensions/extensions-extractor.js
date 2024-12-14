@@ -1,6 +1,6 @@
 import decompress from 'decompress';
 import decompressUnzip from 'decompress-unzip';
-import { promises } from 'fs';
+import { promises, stat } from 'fs';
 
 const { access, unlink } = promises;
 
@@ -8,20 +8,29 @@ export const extractExtension = (source, dest) => {
   if (!(source && dest)) {
     throw new Error('Missing parameter');
   }
+  return stat(dest)
+      .then((stats) => {
+        if (stats.isDirectory() || stats.isFile()) {
+          console.log(`Destination ${dest} already exists, skipping extraction`);
+          return null;
+        }
+      })
+      .catch((err) => {
+        if (err.code !== 'ENOENT') {
+          throw err;
+        }
 
-  return access(source)
-    .then(() =>
-      withRetry({
-        fn() {
-          return decompress(source, dest, {
-            plugins: [decompressUnzip()],
-            filter: (file) => {
-              return !file.path.endsWith('/');
-            },
-          });
-        },
-      }),
-    );
+        return access(source)
+            .then(() => withRetry({
+              fn() {
+                return decompress(source, dest, {
+                  plugins: [decompressUnzip()], filter: (file) => {
+                    return !file.path.endsWith('/');
+                  },
+                });
+              },
+            }),);
+      });
 }
 
 export const deleteExtensionArchive = (dest) => {
