@@ -4,6 +4,19 @@ import { promises } from 'fs';
 
 const { access, unlink, stat } = promises;
 
+function performExtraction(source, dest) {
+  return access(source)
+      .then(() => withRetry({
+        fn() {
+          return decompress(source, dest, {
+            plugins: [decompressUnzip()], filter: (file) => {
+              return !file.path.endsWith('/');
+            },
+          });
+        },
+      }),);
+}
+
 export const extractExtension = (source, dest) => {
   if (!(source && dest)) {
     throw new Error('Missing parameter');
@@ -12,24 +25,16 @@ export const extractExtension = (source, dest) => {
       .then((stats) => {
         if (stats.isDirectory() || stats.isFile()) {
           console.log(`Destination ${dest} already exists, skipping extraction`);
-          return Promise.resolve();
+          return [];
         }
+        return performExtraction(source, dest);
       })
       .catch((err) => {
         if (err.code !== 'ENOENT') {
           throw err;
         }
 
-        return access(source)
-            .then(() => withRetry({
-              fn() {
-                return decompress(source, dest, {
-                  plugins: [decompressUnzip()], filter: (file) => {
-                    return !file.path.endsWith('/');
-                  },
-                });
-              },
-            }),);
+        return performExtraction(source, dest);
       });
 }
 
