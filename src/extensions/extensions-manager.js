@@ -39,12 +39,10 @@ export class ExtensionsManager extends UserExtensionsManager {
         .then(filesList => {
           this.#existedChromeExtensions = filesList.filter(extPath => !extPath.includes('.zip'));
 
-          if (this.#cleanupOnInit) {
-            return filesList.map(fileName => fileName.includes('.zip') ?
-                unlink(join(CHROME_EXTENSIONS_PATH, fileName)) :
-                Promise.resolve());
-          }
-          Promise.resolve([]);
+          return filesList.map(fileName => fileName.includes('.zip') ?
+            unlink(join(CHROME_EXTENSIONS_PATH, fileName)) :
+            Promise.resolve()
+          );
         })
         .then(promisesToDelete => Promise.all(promisesToDelete))
         .catch((e) => console.log('ExtensionsManager init error:', e)),
