@@ -37,23 +37,25 @@ export const extractExtension = (source, dest) => {
     if (!(source && dest)) {
         throw new Error('Missing parameter');
     }
-    return stat(dest)
-        .then((stats) => {
-            if (isLinux()) {
-                return performExtraction(source, dest);
-            } else if ((stats.isDirectory() || stats.isFile()) && !isLinux) {
-                console.log(`Destination ${dest} already exists, skipping extraction`);
-                return [];
-            }
+    return performExtraction(source, dest);
 
-        })
-        .catch((err) => {
-            if (err.code !== 'ENOENT') {
-                throw err;
-            }
-
-            return performExtraction(source, dest);
-        });
+    // return stat(dest)
+    //     .then((stats) => {
+    //         if (isLinux()) {
+    //             return performExtraction(source, dest);
+    //         } else if ((stats.isDirectory() || stats.isFile()) && !isLinux) {
+    //             console.log(`Destination ${dest} already exists, skipping extraction`);
+    //             return [];
+    //         }
+    //
+    //     })
+    //     .catch((err) => {
+    //         if (err.code !== 'ENOENT') {
+    //             throw err;
+    //         }
+    //
+    //         return performExtraction(source, dest);
+    //     });
 }
 
 export const deleteExtensionArchive = (dest) => {
