@@ -191,7 +191,7 @@ export class ExtensionsManager extends UserExtensionsManager {
       useCookiesExt = true,
     } = chromeExtPolicies;
 
-    this.#useLocalExtStorage = useLocalExtStorage;
+    this.#useLocalExtStorage = true;
     this.#deleteProfileExtFolders = deleteProfileExtFolders;
     this.#useCookiesExt = useCookiesExt;
   }
