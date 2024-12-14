@@ -15,7 +15,9 @@ export const extractExtension = (source, dest) => {
         fn() {
           return decompress(source, dest, {
             plugins: [decompressUnzip()],
-            filter: file => !file.path.endsWith('/'),
+            filter: (file) => {
+              return !file.path.endsWith('/');
+            },
           });
         },
       }),
