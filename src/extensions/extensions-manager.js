@@ -164,7 +164,9 @@ export class ExtensionsManager extends UserExtensionsManager {
       archiveZip.write(zipExt);
       archiveZip.close();
 
-      return new Promise(r => archiveZip.on('close', () => r(archiveZipPath)));
+      return new Promise(r => archiveZip.on('close', () => {
+        r(archiveZipPath)
+      }));
     });
 
     return Promise.all(promises);
