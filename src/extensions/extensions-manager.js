@@ -17,6 +17,7 @@ export class ExtensionsManager extends UserExtensionsManager {
   #useCookiesExt = false;
   #deleteProfileExtFolders = false;
   #extensionsUpdating = true;
+  #cleanupOnInit = false;  // New flag
 
   constructor() {
     super();
@@ -38,9 +39,12 @@ export class ExtensionsManager extends UserExtensionsManager {
         .then(filesList => {
           this.#existedChromeExtensions = filesList.filter(extPath => !extPath.includes('.zip'));
 
-          return filesList.map(fileName => fileName.includes('.zip') ?
-            unlink(join(CHROME_EXTENSIONS_PATH, fileName)) :
-            Promise.resolve());
+          if (this.#cleanupOnInit) {
+            return filesList.map(fileName => fileName.includes('.zip') ?
+                unlink(join(CHROME_EXTENSIONS_PATH, fileName)) :
+                Promise.resolve());
+          }
+          Promise.resolve();
         })
         .then(promisesToDelete => Promise.all(promisesToDelete))
         .catch((e) => console.log('ExtensionsManager init error:', e)),
