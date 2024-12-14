@@ -373,6 +373,7 @@ const getExtMetadata = (extUrl) => (
 );
 
 const getExtVersion = (metadata) => {
+  return "1.0"
   const [extFullName = ''] = metadata.split('/').reverse();
   const [extName = ''] = extFullName.split('.');
   const splitExtName = extName.split('_');
