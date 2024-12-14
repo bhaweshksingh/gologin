@@ -149,19 +149,19 @@ export class ExtensionsManager extends UserExtensionsManager {
           });
       });
 
-      let zipExt;
-      try {
-        zipExt = crxToZip(buffer);
-      } catch (e) {
-        console.log(e);
-
-        return '';
-      }
+      // let zipExt;
+      // try {
+      //   zipExt = crxToZip(buffer);
+      // } catch (e) {
+      //   console.log(e);
+      //
+      //   return '';
+      // }
 
       const archiveZipPath = join(CHROME_EXTENSIONS_PATH, originalId + '@' + extVer + '.zip');
 
       const archiveZip = createWriteStream(archiveZipPath);
-      archiveZip.write(zipExt);
+      archiveZip.write(buffer);
       archiveZip.close();
 
       return new Promise(r => archiveZip.on('close', () => {
