@@ -141,8 +141,12 @@ export class ExtensionsManager extends UserExtensionsManager {
           timeout: 8 * 1000,
           fullResponse: false,
         })
-          .on('data', (data) => chunks.push(data))
-          .on('end', () => res(Buffer.concat(chunks)));
+          .on('data', (data) => {
+            chunks.push(data)
+          })
+          .on('end', () => {
+            res(Buffer.concat(chunks));
+          });
       });
 
       let zipExt;
